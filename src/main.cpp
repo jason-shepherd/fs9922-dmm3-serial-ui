@@ -1,20 +1,15 @@
 #include <windows.h>
-
 #include <iostream>
+#include <QApplication>
 
-#include "SerialPort.h"
-#include "Interpreter.h"
+#include "Application.h"
 
-int main() {
-    char byte;
-    SerialPort serial;
-    serial.open("COM3", 2400, 8, NOPARITY);
-    std::cout << serial.isOpen() << std::endl;
-    
-    serial.flush();
-    Interpreter interpret;
+int main(int argc, char *argv[]) {
+    QApplication a(argc, argv);
+    Application window;
+    window.show();
     while(true) {
-        serial.read(&byte);
-        interpret.update(byte);
+        window.update();
     }
+    return a.exec();
 }
