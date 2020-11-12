@@ -7,24 +7,26 @@ Application::Application(QWidget *parent)
 {
     ui->setupUi(this);
 
-    m_serial.open("COM3", 2400, 8, NOPARITY);
-    std::cout << m_serial.isOpen() << std::endl;
-    m_serial.flush();
+    workerThread = new QThread;
+    worker = new Worker();
+    worker->moveToThread(workerThread);
+
+    connect(this, &Application::startData, worker, &Worker::startData);
+    connect(worker, &Worker::newData, this, &Application::showData);
+    workerThread->start();
+    emit startData("COM3");
 }
 
 Application::~Application()
 {
+    workerThread->quit();
+    workerThread->wait();
+    delete worker;
     delete ui;
 }
 
-void Application::update() {
-    char byte;
-    
-    m_serial.read(&byte);
-    m_interpret.update(byte);
-    
-    
-    ui->dataLabel->setText(QString::fromStdString(dataString));
-    ui->voltModeLabel->setText(QString::fromStdString(m_interpret.getVoltMode()));
-    ui->modeLabel->setText(QString::fromStdString(m_interpret.getMode()));
+void Application::showData(const std::vector<QString> &data) {
+   ui->dataLabel->setText(data[0]); 
+   ui->voltModeLabel->setText(data[1]); 
+   ui->modeLabel->setText(data[2]); 
 }

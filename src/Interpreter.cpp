@@ -103,6 +103,10 @@ void Interpreter::display() {
     }
 }
 
+void Interpreter::reset() {
+    m_index = 0;
+}
+
 const bool Interpreter::getPositive() {
     return m_positive;
 }

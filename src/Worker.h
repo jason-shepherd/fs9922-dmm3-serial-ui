@@ -1,29 +1,31 @@
+#pragma once
+
+#include <QObject>
+#include <string>
+#include <vector>
+
+#include "SerialPort.h"
+#include "Interpreter.h"
+
 class Worker : public QObject {
     Q_OBJECT
-    public slots:
-        void doWork();
-    signals:
-        void dataReady(const std::vector<std::string> &data);
-};
 
-class Controller : public QObject {
-    Q_OBJECT
-    QThread workerThread;
     public:
-        Controller() {
-            Worker *worker = new Worker;
-            worker->moveToThread(&workerThread);
-            connect(&workerThread, &QThread::finished, worker, &QObject::deleteLater);
-            connect(this, &Controller::operate, worker, &Worker::doWork);
-            connect(worker, &Worker::dataReady, this, &Controller::handleResults);
-            workerThread.start();
-        }
-        ~Controller() {
-            workerThread.quit();
-            workerThread.wait();
-        }
+        Worker();
+        ~Worker() { stopData(); }
+
     public slots:
-        void handleData(const std::vector<std::string> &);
+        void startData(const char *port);
+        void stopData();
+
     signals:
-        void operate(const std::vector<std::string> &);
+        void newData(const std::vector<QString> &data);
+        void error(const std::string error);
+
+    private:
+        std::vector<QString> m_data;
+        bool m_quit;
+
+        SerialPort m_serial;
+        Interpreter m_interpret;
 };

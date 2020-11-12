@@ -21,6 +21,7 @@ class Interpreter {
     public:
         void update(char byte);
         void display();
+        void reset();
 
         const bool getPositive();
         const int getPoint();

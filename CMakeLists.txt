@@ -1,25 +1,28 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.19)
 
-project(MultimeterMod LANGUAGES CXX)
+project(MultimeterMod)
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
-set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+if(CMAKE_VERSION VERSION_LESS "3.7.0")
+    set(CMAKE_INCLUDE_CURRENT_DIR ON)
+endif()
 
-list(APPEND CMAKE_PREFIX_PATH "C:/Qt/5.9.9/mingw53_32/lib/cmake")
+set(EXECUTABLE_OUTPUT_PATH build)
+
+set(CMAKE_PREFIX_PATH "C:/Qt/5.9.9/msvc2017_64")
+
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 add_executable(MultimeterMod
-	src/main.cpp
-	src/Application.cpp
-	src/SerialPort.cpp
-	src/Interpreter.cpp
-	src/application.ui
+    src/main.cpp
+    src/Application.cpp
+    src/application.ui
+    src/SerialPort.cpp
+    src/Interpreter.cpp
+    src/Worker.cpp
 )
 
 target_link_libraries(MultimeterMod Qt5::Widgets)
