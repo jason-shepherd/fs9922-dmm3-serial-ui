@@ -6,76 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>586</width>
-    <height>207</height>
+    <width>832</width>
+    <height>263</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Application</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="dataLabel">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>491</width>
-      <height>141</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>84</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>-0.000mV</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="voltModeLabel">
-    <property name="geometry">
-     <rect>
-      <x>490</x>
-      <y>30</y>
-      <width>101</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>36</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>DC</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="modeLabel">
-    <property name="geometry">
-     <rect>
-      <x>490</x>
-      <y>70</y>
-      <width>161</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>24</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Diode</string>
-    </property>
-   </widget>
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>120</y>
+      <y>170</y>
       <width>211</width>
       <height>41</height>
      </rect>
@@ -97,8 +40,8 @@
     <property name="geometry">
      <rect>
       <x>230</x>
-      <y>120</y>
-      <width>201</width>
+      <y>170</y>
+      <width>381</width>
       <height>39</height>
      </rect>
     </property>
@@ -114,15 +57,96 @@
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>470</x>
-      <y>130</y>
-      <width>101</width>
-      <height>21</height>
+      <x>590</x>
+      <y>170</y>
+      <width>141</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
      <string>Start Data Log</string>
     </property>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>764</width>
+      <height>171</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="dataLabel">
+       <property name="font">
+        <font>
+         <pointsize>84</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>-0.000mV</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="voltModeLabel">
+         <property name="font">
+          <font>
+           <pointsize>24</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>DC</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="modeLabel">
+         <property name="font">
+          <font>
+           <pointsize>36</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Diode</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -130,8 +154,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>586</width>
-     <height>21</height>
+     <width>832</width>
+     <height>26</height>
     </rect>
    </property>
   </widget>

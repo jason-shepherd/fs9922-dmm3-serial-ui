@@ -19,7 +19,7 @@ class Application : public QMainWindow
         ~Application();
 
     public slots:
-        void showData(const std::vector<QString> &data);
+        void showData(const QString *data);
 
     signals:
         void startData(const char* port);

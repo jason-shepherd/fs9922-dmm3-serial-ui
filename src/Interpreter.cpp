@@ -1,5 +1,10 @@
 #include "Interpreter.h"
 
+Interpreter::Interpreter() {
+    for(int i = 0; i < 4; i++)
+        m_data[i] = 0;
+}
+
 void Interpreter::update(char byte) {
     m_byteString[m_index] = byte;
 
@@ -84,7 +89,6 @@ void Interpreter::update(char byte) {
 
     if((int)byte == 10) {
         m_index = 0;
-        display();
     }
 }
 

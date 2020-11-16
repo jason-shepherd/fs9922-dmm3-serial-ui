@@ -14,18 +14,18 @@ Application::Application(QWidget *parent)
     connect(this, &Application::startData, worker, &Worker::startData);
     connect(worker, &Worker::newData, this, &Application::showData);
     workerThread->start();
-    emit startData("COM3");
+    emit startData("COM5");
 }
 
 Application::~Application()
 {
+    delete worker;
     workerThread->quit();
     workerThread->wait();
-    delete worker;
     delete ui;
 }
 
-void Application::showData(const std::vector<QString> &data) {
+void Application::showData(const QString *data) {
    ui->dataLabel->setText(data[0]); 
    ui->voltModeLabel->setText(data[1]); 
    ui->modeLabel->setText(data[2]); 

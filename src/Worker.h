@@ -12,18 +12,17 @@ class Worker : public QObject {
 
     public:
         Worker();
-        ~Worker() { stopData(); }
 
     public slots:
         void startData(const char *port);
         void stopData();
 
     signals:
-        void newData(const std::vector<QString> &data);
+        void newData(const QString *data);
         void error(const std::string error);
 
     private:
-        std::vector<QString> m_data;
+        QString m_data[4];
         bool m_quit;
 
         SerialPort m_serial;
