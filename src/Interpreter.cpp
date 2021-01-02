@@ -2,7 +2,7 @@
 
 Interpreter::Interpreter() {
     for(int i = 0; i < 4; i++)
-        m_data[i] = 0;
+        m_data[i] = '0';
 }
 
 void Interpreter::update(char byte) {

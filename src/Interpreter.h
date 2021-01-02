@@ -12,12 +12,12 @@ class Interpreter {
         char m_byteString[14];
 
         bool m_positive;
-        char m_data[4];;
+        char m_data[4];
         int m_point = 0;
-        std::string m_mode = "";
-        std::string m_unit = "";
-        std::string m_voltMode = "";
-        std::string m_prefix;
+        std::string m_mode = "AUTO";
+        std::string m_unit = "V";
+        std::string m_voltMode = "DC";
+        std::string m_prefix = "";
     public:
         Interpreter::Interpreter();
 

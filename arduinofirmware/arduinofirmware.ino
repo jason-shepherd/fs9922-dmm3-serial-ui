@@ -6,6 +6,7 @@ int Byte;
 
 void setup() {
   // put your setup code here, to run once:
+  pinMode(3, INPUT);
   Serial.begin(2400);
   while(!Serial) {
     ;
@@ -20,4 +21,5 @@ void loop() {
     Byte = mySerial.read();
     Serial.write(Byte);
   }
+  //Serial.println(digitalRead(3));
 }
