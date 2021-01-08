@@ -1,6 +1,8 @@
 #pragma once
 
 #include <windows.h>
+#include <vector>
+#include <string>
 
 class SerialPort {
     private:
@@ -17,4 +19,5 @@ class SerialPort {
         bool read(const char* byte);
         bool flush();
         bool isOpen();
+        static const std::vector<std::string> getActivePorts();
 };

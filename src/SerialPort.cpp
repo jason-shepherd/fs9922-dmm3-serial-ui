@@ -61,3 +61,17 @@ bool SerialPort::flush() {
 bool SerialPort::isOpen() {
     return ClearCommError(m_handler, NULL, &m_status);
 }
+
+const std::vector<std::string> SerialPort::getActivePorts() {
+    char lpTargetPath[5000];
+    std::vector<std::string> foundPorts;
+
+    for(int i = 0; i < 255; i++) {
+        std::string port = "COM" + std::to_string(i);
+        DWORD test = QueryDosDevice(port.c_str(), lpTargetPath, 5000);
+        if(test != 0) {
+            foundPorts.push_back(port);
+        }
+    }
+    return foundPorts;
+}

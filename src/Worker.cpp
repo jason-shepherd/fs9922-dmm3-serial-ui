@@ -50,3 +50,11 @@ void Worker::stopData() {
     m_interpret.reset();
     m_quit = true;
 }
+
+void Worker::refreshActivePorts() {
+    std::vector<std::string> ports = m_serial.getActivePorts();
+    QStringList newPorts;
+    for(int i = 0; i < ports.size(); i++)
+        newPorts.append(QString::fromStdString(ports[i]));
+    refreshedActivePorts(newPorts);
+}

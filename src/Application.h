@@ -20,9 +20,11 @@ class Application : public QMainWindow
 
     public slots:
         void showData(const QString *data);
+        void updateActivePorts(const QStringList ports);
 
     signals:
         void startData(const char* port);
+        void refreshPortList();
     
     private:
         Ui::Application *ui;

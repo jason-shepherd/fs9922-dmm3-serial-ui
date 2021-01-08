@@ -16,10 +16,12 @@ class Worker : public QObject {
     public slots:
         void startData(const char *port);
         void stopData();
+        void refreshActivePorts();
 
     signals:
         void newData(const QString *data);
         void error(const std::string error);
+        void refreshedActivePorts(const QStringList ports);
 
     private:
         QString m_data[4];

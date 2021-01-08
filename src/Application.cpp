@@ -13,8 +13,11 @@ Application::Application(QWidget *parent)
 
     connect(this, &Application::startData, worker, &Worker::startData);
     connect(worker, &Worker::newData, this, &Application::showData);
+    connect(this, &Application::refreshPortList, worker, &Worker::refreshActivePorts);
+    connect(worker, &Worker::refreshedActivePorts, this, &Application::updateActivePorts);
     workerThread->start();
-    emit startData("COM15");
+    emit refreshPortList();
+    //emit startData("COM15");
 }
 
 Application::~Application()
@@ -29,4 +32,9 @@ void Application::showData(const QString *data) {
    ui->dataLabel->setText(data[0]); 
    ui->voltModeLabel->setText(data[1]); 
    ui->modeLabel->setText(data[2]); 
+}
+
+void Application::updateActivePorts(const QStringList ports) {
+    for(int i = 0; i < ports.size(); i++)
+        ui->selectPort->addItem(ports[i]);
 }
