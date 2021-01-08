@@ -14,7 +14,7 @@ Application::Application(QWidget *parent)
     connect(this, &Application::startData, worker, &Worker::startData);
     connect(worker, &Worker::newData, this, &Application::showData);
     workerThread->start();
-    emit startData("COM5");
+    emit startData("COM15");
 }
 
 Application::~Application()

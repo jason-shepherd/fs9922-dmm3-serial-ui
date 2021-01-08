@@ -19,7 +19,7 @@ class Interpreter {
         std::string m_voltMode = "DC";
         std::string m_prefix = "";
     public:
-        Interpreter::Interpreter();
+        Interpreter();
 
         void update(char byte);
         void display();
