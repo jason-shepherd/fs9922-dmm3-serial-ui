@@ -19,7 +19,7 @@
      <rect>
       <x>10</x>
       <y>170</y>
-      <width>211</width>
+      <width>281</width>
       <height>41</height>
      </rect>
     </property>
@@ -28,9 +28,16 @@
       <widget class="QComboBox" name="selectPort"/>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="connectButton">
        <property name="text">
         <string>Connect</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="refreshButton">
+       <property name="text">
+        <string>Refresh</string>
        </property>
       </widget>
      </item>
@@ -39,7 +46,7 @@
    <widget class="QLabel" name="comStatusLabel">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>300</x>
       <y>170</y>
       <width>381</width>
       <height>39</height>
@@ -54,10 +61,10 @@
      <string>COM4 is currently being read.</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="logButton">
     <property name="geometry">
      <rect>
-      <x>590</x>
+      <x>680</x>
       <y>170</y>
       <width>141</width>
       <height>41</height>

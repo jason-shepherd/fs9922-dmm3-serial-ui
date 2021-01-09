@@ -13,6 +13,7 @@ Application::Application(QWidget *parent)
 
     connect(this, &Application::startData, worker, &Worker::startData);
     connect(worker, &Worker::newData, this, &Application::showData);
+    connect(ui->refreshButton, &QPushButton::pressed, worker, &Worker::refreshActivePorts);
     connect(this, &Application::refreshPortList, worker, &Worker::refreshActivePorts);
     connect(worker, &Worker::refreshedActivePorts, this, &Application::updateActivePorts);
     workerThread->start();
@@ -35,6 +36,7 @@ void Application::showData(const QString *data) {
 }
 
 void Application::updateActivePorts(const QStringList ports) {
+    ui->selectPort->clear();
     for(int i = 0; i < ports.size(); i++)
         ui->selectPort->addItem(ports[i]);
 }
