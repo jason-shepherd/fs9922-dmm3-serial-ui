@@ -20,10 +20,12 @@ class Application : public QMainWindow
 
     public slots:
         void showData(const QString *data);
+        void connectToPort();
         void updateActivePorts(const QStringList ports);
 
     signals:
         void startData(const char* port);
+        void stopData();
         void refreshPortList();
     
     private:

@@ -35,7 +35,7 @@ bool SerialPort::open(const char* portName, DWORD baudRate, BYTE byteSize, BYTE 
         return false;
     } else {
         std::cout << portName << " has been opened and configured." << std::endl;
-        return false;
+        return true;
     }
     return true;
 }
