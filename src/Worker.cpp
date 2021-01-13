@@ -1,32 +1,21 @@
 #include "Worker.h"
 #include <iostream>
 
-Worker::Worker() {
-    m_timer = new QTimer(this);
-    connect(m_timer, &QTimer::timeout, this, &Worker::getData);
-}
-
-Worker::~Worker() {
-    m_timer->stop();
-    delete m_timer;
-    delete m_port;
-}
-
-void Worker::startData(const char *port) {
+void Worker::startPort(const char *port) {
     if(m_serial.isOpen())
         m_serial.close();
     if(m_serial.open(port, 2400, 8, NOPARITY)) {
         m_interpret.reset();
         m_serial.flush();
-        m_timer->start(5);
     } else {
         std::cout << "Failed to connect to COM Port" << std::endl;
     }
 }
 
-void Worker::stopData() {
-    m_timer->stop();
-    std::cout << "Hello from stopData!" << std::endl;
+void Worker::stopPort() {
+    m_serial.close();
+    m_interpret.reset();
+    std::cout << "hello from stopPort" << std::endl;
 }
 
 void Worker::refreshActivePorts() {

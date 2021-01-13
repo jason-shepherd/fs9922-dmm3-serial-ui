@@ -1,8 +1,8 @@
-#ifndef APPLICATION_H
-#define APPLICATION_H
+#pragma once
 
 #include <QMainWindow>
 #include <QThread>
+#include <QTimer>
 
 #include "Worker.h"
 
@@ -17,21 +17,23 @@ class Application : public QMainWindow
     public:
         Application(QWidget *parent = nullptr);
         ~Application();
+        void startData();
+        void stopData();
 
     public slots:
         void showData(const QString *data);
-        void connectToPort();
+        void togglePortConnection();
         void updateActivePorts(const QStringList ports);
 
     signals:
-        void startData(const char* port);
-        void stopData();
+        void startPort(const char*);
+        void stopPort();
         void refreshPortList();
     
     private:
         Ui::Application *ui;
         QThread *workerThread;
         Worker *worker;
-
+        QTimer *timer;
+        bool isPortConnected = false;
 };
-#endif // APPLICATION_H

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QObject>
-#include <QTimer>
 #include <string>
 #include <vector>
 
@@ -11,17 +10,11 @@
 class Worker : public QObject {
     Q_OBJECT
 
-    public:
-        Worker();
-        ~Worker();
-
     public slots:
-        void startData(const char *port);
-        void stopData();
-        void refreshActivePorts();
-
-    private slots:
+        void startPort(const char *port);
+        void stopPort();
         void getData();
+        void refreshActivePorts();
 
     signals:
         void newData(const QString *data);
@@ -29,9 +22,7 @@ class Worker : public QObject {
         void refreshedActivePorts(const QStringList ports);
 
     private:
-        char *m_port;
         QString m_data[4];
-        QTimer *m_timer;
         SerialPort m_serial;
         Interpreter m_interpret;
 };

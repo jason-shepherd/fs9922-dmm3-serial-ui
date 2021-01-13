@@ -7,6 +7,8 @@ cmake_install.cmake
 src/.clangd/
 src/.cache/
 .cache
+.cmake
+.clangd
 src/compile_commands.json
 compile_commands.json
 MultimeterMod_autogen
