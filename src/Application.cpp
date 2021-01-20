@@ -17,6 +17,7 @@ Application::Application(QWidget *parent)
 
     connect(this, &Application::refreshPortList, worker, &Worker::refreshActivePorts, Qt::QueuedConnection);
     connect(worker, &Worker::refreshedActivePorts, this, &Application::updateActivePorts, Qt::QueuedConnection);
+    connect(worker, &Worker::portStatus, this, &Application::updatePortStatus);
 
     connect(ui->refreshButton, &QPushButton::pressed, worker, &Worker::refreshActivePorts, Qt::QueuedConnection);
     connect(ui->connectButton, &QPushButton::pressed, this, &Application::togglePortConnection, Qt::QueuedConnection);
@@ -69,4 +70,8 @@ void Application::updateActivePorts(const QStringList ports) {
     ui->selectPort->clear();
     for(int i = 0; i < ports.size(); i++)
         ui->selectPort->addItem(ports[i]);
+}
+
+void Application::updatePortStatus(const QString status) {
+    ui->comStatusLabel->setText(status);
 }

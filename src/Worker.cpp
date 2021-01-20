@@ -7,15 +7,16 @@ void Worker::startPort(const char *port) {
     if(m_serial.open(port, 2400, 8, NOPARITY)) {
         m_interpret.reset();
         m_serial.flush();
+        emit portStatus(QString::fromLocal8Bit(port) + " is connected and configured.");
     } else {
-        std::cout << "Failed to connect to COM Port" << std::endl;
+        emit portStatus("Could not connect to " + QString::fromLocal8Bit(port) + ".");
     }
 }
 
 void Worker::stopPort() {
     m_serial.close();
     m_interpret.reset();
-    std::cout << "hello from stopPort" << std::endl;
+    emit portStatus("Serial has been disconnected.");
 }
 
 void Worker::refreshActivePorts() {

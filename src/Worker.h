@@ -20,6 +20,7 @@ class Worker : public QObject {
         void newData(const QString *data);
         void error(const std::string error);
         void refreshedActivePorts(const QStringList ports);
+        void portStatus(const QString status);
 
     private:
         QString m_data[4];

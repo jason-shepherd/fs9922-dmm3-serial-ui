@@ -13,7 +13,6 @@ bool SerialPort::open(const char* portName, DWORD baudRate, BYTE byteSize, BYTE 
     //Open COM port as a file
     m_handler = CreateFile(portName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
     if(m_handler == INVALID_HANDLE_VALUE) {
-        std::cerr << "Error opening " << portName << " port: " << GetLastError() << std::endl;
         return false;
     }
 
@@ -22,7 +21,6 @@ bool SerialPort::open(const char* portName, DWORD baudRate, BYTE byteSize, BYTE 
     m_config.DCBlength = sizeof(DCB);
 
     if(!GetCommState(m_handler, &m_config)) {
-        std::cerr << "Could not get status of " << portName << ". Reason " << GetLastError() << std::endl;
         return false;
     }
 
@@ -31,10 +29,8 @@ bool SerialPort::open(const char* portName, DWORD baudRate, BYTE byteSize, BYTE 
     m_config.Parity = parity;
 
     if(!SetCommState(m_handler, &m_config)) {
-        std::cerr << "Could not configure " << portName << ". Reason " << GetLastError() << std::endl;
         return false;
     } else {
-        std::cout << portName << " has been opened and configured." << std::endl;
         return true;
     }
     return true;
@@ -48,7 +44,6 @@ bool SerialPort::read(const char* byte) {
     DWORD read{};
 
     if(!ReadFile(m_handler, (void*) byte, 1, &read, NULL)) {
-        std::cerr << "Could not read from COM port. Reason " << GetLastError() << std::endl;
         return false;
     }
     return read;

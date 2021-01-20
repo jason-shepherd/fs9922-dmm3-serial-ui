@@ -24,6 +24,7 @@ class Application : public QMainWindow
         void showData(const QString *data);
         void togglePortConnection();
         void updateActivePorts(const QStringList ports);
+        void updatePortStatus(const QString status);
 
     signals:
         void startPort(const char*);
