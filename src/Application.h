@@ -27,7 +27,7 @@ class Application : public QMainWindow
         void updatePortStatus(const QString status);
 
     signals:
-        void startPort(const char*);
+        void startPort(const QString port);
         void stopPort();
         void refreshPortList();
     

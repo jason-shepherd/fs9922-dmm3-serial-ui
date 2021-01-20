@@ -11,7 +11,7 @@ class Worker : public QObject {
     Q_OBJECT
 
     public slots:
-        void startPort(const char *port);
+        void startPort(const QString port);
         void stopPort();
         void getData();
         void refreshActivePorts();

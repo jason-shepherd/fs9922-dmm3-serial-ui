@@ -38,9 +38,8 @@ Application::~Application()
 }
 
 void Application::startData() {
-    std::string currentPort = ui->selectPort->currentText().toStdString();
-    emit startPort(currentPort.c_str());
-    timer->start(25);
+    emit startPort(ui->selectPort->currentText());
+    timer->start(0);
     ui->connectButton->setText("Disconnect");
     isPortConnected = true;
 }

@@ -1,15 +1,17 @@
 #include "Worker.h"
 #include <iostream>
 
-void Worker::startPort(const char *port) {
+void Worker::startPort(const QString port) {
+    std::string temp = port.toStdString();
+    const char* newPort = temp.c_str();
     if(m_serial.isOpen())
         m_serial.close();
-    if(m_serial.open(port, 2400, 8, NOPARITY)) {
+    if(m_serial.open(newPort, 2400, 8, NOPARITY)) {
         m_interpret.reset();
         m_serial.flush();
-        emit portStatus(QString::fromLocal8Bit(port) + " is connected and configured.");
+        emit portStatus(port + " is connected and configured.");
     } else {
-        emit portStatus("Could not connect to " + QString::fromLocal8Bit(port) + ".");
+        emit portStatus("Could not connect to " + port + ".");
     }
 }
 
