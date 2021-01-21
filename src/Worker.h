@@ -26,4 +26,5 @@ class Worker : public QObject {
         QString m_data[4];
         SerialPort m_serial;
         Interpreter m_interpret;
+        bool m_running = false;
 };

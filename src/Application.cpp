@@ -11,6 +11,9 @@ Application::Application(QWidget *parent)
     worker = new Worker();
     worker->moveToThread(workerThread);
 
+    connect(workerThread, &QThread::started, worker, &Worker::getData);
+    connect(workerThread, &QThread::finished, worker, &Worker::deleteLater);
+
     connect(this, &Application::startPort, worker, &Worker::startPort, Qt::QueuedConnection);
     connect(worker, &Worker::newData, this, &Application::showData, Qt::QueuedConnection);
     connect(this, &Application::stopPort, worker, &Worker::stopPort, Qt::QueuedConnection);
@@ -21,17 +24,15 @@ Application::Application(QWidget *parent)
 
     connect(ui->refreshButton, &QPushButton::pressed, worker, &Worker::refreshActivePorts, Qt::QueuedConnection);
     connect(ui->connectButton, &QPushButton::pressed, this, &Application::togglePortConnection, Qt::QueuedConnection);
-    workerThread->start();
 
-    timer = new QTimer();
-    connect(timer, &QTimer::timeout, worker, &Worker::getData, Qt::QueuedConnection);
+    workerThread->start();
 
     emit refreshPortList();
 }
 
 Application::~Application()
 {
-    stopData();
+    emit stopPort();
     workerThread->quit();
     workerThread->wait();
     delete ui;
@@ -39,13 +40,11 @@ Application::~Application()
 
 void Application::startData() {
     emit startPort(ui->selectPort->currentText());
-    timer->start(0);
     ui->connectButton->setText("Disconnect");
     isPortConnected = true;
 }
 
 void Application::stopData() {
-    timer->stop();
     emit stopPort();
     ui->connectButton->setText("Connect");
     isPortConnected = false;

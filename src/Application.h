@@ -35,6 +35,5 @@ class Application : public QMainWindow
         Ui::Application *ui;
         QThread *workerThread;
         Worker *worker;
-        QTimer *timer;
         bool isPortConnected = false;
 };
