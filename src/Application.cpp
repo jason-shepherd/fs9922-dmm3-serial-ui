@@ -6,18 +6,22 @@ Application::Application(QWidget *parent)
     , ui(new Ui::Application)
 {
     ui->setupUi(this);
-
+    
+    //create thread for worker and move worker object to it
     workerThread = new QThread;
     worker = new Worker();
     worker->moveToThread(workerThread);
 
+    // connect thread signals to start and delete worker
     connect(workerThread, &QThread::started, worker, &Worker::getData);
     connect(workerThread, &QThread::finished, worker, &Worker::deleteLater);
 
-    connect(this, &Application::startPort, worker, &Worker::startPort, Qt::QueuedConnection);
-    connect(worker, &Worker::newData, this, &Application::showData, Qt::QueuedConnection);
-    connect(this, &Application::stopPort, worker, &Worker::stopPort, Qt::QueuedConnection);
+    // connect signals and slots that start and stop the worker's work
+    connect(this, &Application::startPort, worker, &Worker::startPort);
+    connect(this, &Application::stopPort, worker, &Worker::stopPort);
+    connect(worker, &Worker::newData, this, &Application::showData);
 
+    // connect signals that are used for getting active ports and the status of the current port
     connect(this, &Application::refreshPortList, worker, &Worker::refreshActivePorts, Qt::QueuedConnection);
     connect(worker, &Worker::refreshedActivePorts, this, &Application::updateActivePorts, Qt::QueuedConnection);
     connect(worker, &Worker::portStatus, this, &Application::updatePortStatus);
@@ -27,6 +31,7 @@ Application::Application(QWidget *parent)
 
     workerThread->start();
 
+    // get the initial list of active ports
     emit refreshPortList();
 }
 
@@ -38,38 +43,34 @@ Application::~Application()
     delete ui;
 }
 
-void Application::startData() {
-    emit startPort(ui->selectPort->currentText());
-    ui->connectButton->setText("Disconnect");
-    isPortConnected = true;
-}
-
-void Application::stopData() {
-    emit stopPort();
-    ui->connectButton->setText("Connect");
-    isPortConnected = false;
-}
-
+// update ui from worker data
 void Application::showData(const QString *data) {
    ui->dataLabel->setText(data[0]); 
    ui->voltModeLabel->setText(data[1]); 
    ui->modeLabel->setText(data[2]); 
 }
 
+// connect\disconnect from selected port on button press
 void Application::togglePortConnection() {
     if(!isPortConnected) {
-        startData();
+        emit startPort(ui->selectPort->currentText());
+        ui->connectButton->setText("Disconnect");
+        isPortConnected = true;
     } else {
-        stopData();
+        emit stopPort();
+        ui->connectButton->setText("Connect");
+        isPortConnected = false;
     }
 }
 
+// update the list of active ports on the combobox
 void Application::updateActivePorts(const QStringList ports) {
     ui->selectPort->clear();
     for(int i = 0; i < ports.size(); i++)
         ui->selectPort->addItem(ports[i]);
 }
 
+// update the ports status on the ui
 void Application::updatePortStatus(const QString status) {
     ui->comStatusLabel->setText(status);
 }

@@ -5,10 +5,11 @@ Interpreter::Interpreter() {
         m_data[i] = '0';
 }
 
+// updates current interpretation after receiving a byte
 void Interpreter::update(char byte) {
     m_byteString[m_index] = byte;
 
-    //data
+    // interpret data (the 4 digits)
     m_positive = m_byteString[0] == '+';
     for(int i = 0; i < 4; i++)
         m_data[i] = m_byteString[i+1];
@@ -16,8 +17,8 @@ void Interpreter::update(char byte) {
     if(m_point == 4)
         m_point = 3;
 
-    //sb bytes interpretation, not pretty but better than nothing
-    //mode
+    // sb bytes interpretation, not pretty but better than nothing
+    // mode
     if(CHECK_BIT(m_byteString[7], 2))
         m_mode = "REL";
     else if(CHECK_BIT(m_byteString[7], 5))
@@ -35,7 +36,7 @@ void Interpreter::update(char byte) {
     else
         m_mode = "";
 
-    //voltMode
+    // mode of the voltage 
     if(CHECK_BIT(m_byteString[7], 3))
         m_voltMode = "AC";
     else if(CHECK_BIT(m_byteString[7], 4))
@@ -43,7 +44,7 @@ void Interpreter::update(char byte) {
     else
         m_voltMode = "";
 
-    //prefix
+    // prefix of measurement unit
     if(CHECK_BIT(m_byteString[8], 1))
         m_prefix = 'n';
     else if(CHECK_BIT(m_byteString[9], 7))
@@ -57,7 +58,7 @@ void Interpreter::update(char byte) {
     else
         m_prefix = "";
 
-    //unit 
+    // unit 
     switch((int)m_byteString[10]) {
         case -128:
             m_unit = 'V';
@@ -86,12 +87,14 @@ void Interpreter::update(char byte) {
     }
     
     m_index++; 
-
+    
+    // the last byte of the serial byte string is always 10
     if((int)byte == 10) {
         m_index = 0;
     }
 }
 
+// displays interpretation in terminal, leftover from debugging :)
 void Interpreter::display() {
     if(!m_positive)
         std::cout << "-";
@@ -107,10 +110,12 @@ void Interpreter::display() {
     }
 }
 
+// resets the interpreter, but I could go further and clear all the variables
 void Interpreter::reset() {
     m_index = 0;
 }
 
+// get functions
 const bool Interpreter::getPositive() {
     return m_positive;
 }

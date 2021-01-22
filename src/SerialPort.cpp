@@ -1,5 +1,4 @@
 #include "SerialPort.h"
-#include <iostream>
 
 SerialPort::SerialPort(const char* portName, DWORD baudRate, BYTE byteSize, BYTE parity) {
     open(portName, baudRate, byteSize, parity);
@@ -9,14 +8,15 @@ SerialPort::~SerialPort() {
     close();
 }
 
+// opens and configures serial port with specified parameters
 bool SerialPort::open(const char* portName, DWORD baudRate, BYTE byteSize, BYTE parity) {
-    //Open COM port as a file
+    // open COM port as a file
     m_handler = CreateFile(portName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
     if(m_handler == INVALID_HANDLE_VALUE) {
         return false;
     }
 
-    //Configure COM port
+    // configure COM port
     m_config = {0};
     m_config.DCBlength = sizeof(DCB);
 
@@ -36,10 +36,12 @@ bool SerialPort::open(const char* portName, DWORD baudRate, BYTE byteSize, BYTE 
     return true;
 }
 
+// close serial port
 bool SerialPort::close() {
     return CloseHandle(m_handler);
 }
 
+// read a single byte from the serial port
 bool SerialPort::read(const char* byte) {
     DWORD read{};
 
@@ -49,14 +51,17 @@ bool SerialPort::read(const char* byte) {
     return read;
 }
 
+// flush the serial data buffer
 bool SerialPort::flush() {
     return PurgeComm(m_handler, PURGE_TXCLEAR);
 }
 
+// returns true if the port is open
 bool SerialPort::isOpen() {
     return ClearCommError(m_handler, NULL, &m_status);
 }
 
+// returns a vector of active serial ports
 const std::vector<std::string> SerialPort::getActivePorts() {
     char lpTargetPath[5000];
     std::vector<std::string> foundPorts;

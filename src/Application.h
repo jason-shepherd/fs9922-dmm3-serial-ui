@@ -17,8 +17,6 @@ class Application : public QMainWindow
     public:
         Application(QWidget *parent = nullptr);
         ~Application();
-        void startData();
-        void stopData();
 
     public slots:
         void showData(const QString *data);

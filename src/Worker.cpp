@@ -1,5 +1,6 @@
 #include "Worker.h"
 
+// connect to port using SerialPort class
 void Worker::startPort(const QString port) {
     std::string temp = port.toStdString();
     const char* newPort = temp.c_str();
@@ -15,6 +16,7 @@ void Worker::startPort(const QString port) {
     }
 }
 
+// disconnect from the port
 void Worker::stopPort() {
     m_running = false;
     m_serial.close();
@@ -22,20 +24,25 @@ void Worker::stopPort() {
     emit portStatus("Serial has been disconnected.");
 }
 
+// gets an list of active lists from SerialPort and sends it to the ui thread
 void Worker::refreshActivePorts() {
     std::vector<std::string> ports = m_serial.getActivePorts();
     QStringList newPorts;
     for(int i = 0; i < ports.size(); i++)
         newPorts.append(QString::fromStdString(ports[i]));
-    refreshedActivePorts(newPorts);
+    emit refreshedActivePorts(newPorts);
 }
 
+// reads serial, sends it to interpreter, formats for ui, then sends to application
+// also calls itself using invokeMethod, so it is constantly running without blocking the event loop
+// will only read\interpret serial if m_running is true
 void Worker::getData() {
     if(m_running) {
         char byte = '0';
         if(m_serial.read(&byte)) {
             m_interpret.update(byte);
-        
+            
+            // prepare data for the ui
             std::string dataString;
             if(m_interpret.getPoint() != 0) {
                 std::string rawData = m_interpret.getData();
@@ -61,5 +68,6 @@ void Worker::getData() {
             emit newData(m_data);
         }
     }
+    // calls itself using a signal, so the event loop can process other signals
     QMetaObject::invokeMethod(this, "getData", Qt::QueuedConnection);
 }
