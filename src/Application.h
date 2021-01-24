@@ -22,7 +22,9 @@ class Application : public QMainWindow
         void showData(const QString *data);
         void togglePortConnection();
         void updateActivePorts(const QStringList ports);
-        void updatePortStatus(const QString status);
+        void portError(const QString error);
+        void portConnected();
+        void portDisconnected();
 
     signals:
         void startPort(const QString port);

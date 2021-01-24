@@ -10,9 +10,9 @@ void Worker::startPort(const QString port) {
         m_interpret.reset();
         m_serial.flush();
         m_running = true;
-        emit portStatus(port + " is connected and configured.");
+        emit connected();
     } else {
-        emit portStatus("Could not connect to " + port + ".");
+        emit error("Could not connect to " + port + ".");
     }
 }
 
@@ -21,7 +21,7 @@ void Worker::stopPort() {
     m_running = false;
     m_serial.close();
     m_interpret.reset();
-    emit portStatus("Serial has been disconnected.");
+    emit disconnected();
 }
 
 // gets an list of active lists from SerialPort and sends it to the ui thread
@@ -38,6 +38,11 @@ void Worker::refreshActivePorts() {
 // will only read\interpret serial if m_running is true
 void Worker::getData() {
     if(m_running) {
+        if(!m_serial.isOpen()) {
+            m_running = false;
+            emit disconnected();
+        }
+
         char byte = '0';
         if(m_serial.read(&byte)) {
             m_interpret.update(byte);

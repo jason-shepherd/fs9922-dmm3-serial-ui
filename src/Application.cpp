@@ -22,12 +22,14 @@ Application::Application(QWidget *parent)
     connect(worker, &Worker::newData, this, &Application::showData);
 
     // connect signals that are used for getting active ports and the status of the current port
-    connect(this, &Application::refreshPortList, worker, &Worker::refreshActivePorts, Qt::QueuedConnection);
-    connect(worker, &Worker::refreshedActivePorts, this, &Application::updateActivePorts, Qt::QueuedConnection);
-    connect(worker, &Worker::portStatus, this, &Application::updatePortStatus);
+    connect(this, &Application::refreshPortList, worker, &Worker::refreshActivePorts);
+    connect(worker, &Worker::refreshedActivePorts, this, &Application::updateActivePorts);
+    connect(worker, &Worker::error, this, &Application::portError);
+    connect(worker, &Worker::connected, this, &Application::portConnected);
+    connect(worker, &Worker::disconnected, this, &Application::portDisconnected);
 
-    connect(ui->refreshButton, &QPushButton::pressed, worker, &Worker::refreshActivePorts, Qt::QueuedConnection);
-    connect(ui->connectButton, &QPushButton::pressed, this, &Application::togglePortConnection, Qt::QueuedConnection);
+    connect(ui->refreshButton, &QPushButton::pressed, worker, &Worker::refreshActivePorts);
+    connect(ui->connectButton, &QPushButton::pressed, this, &Application::togglePortConnection);
 
     workerThread->start();
 
@@ -54,12 +56,8 @@ void Application::showData(const QString *data) {
 void Application::togglePortConnection() {
     if(!isPortConnected) {
         emit startPort(ui->selectPort->currentText());
-        ui->connectButton->setText("Disconnect");
-        isPortConnected = true;
     } else {
         emit stopPort();
-        ui->connectButton->setText("Connect");
-        isPortConnected = false;
     }
 }
 
@@ -71,6 +69,18 @@ void Application::updateActivePorts(const QStringList ports) {
 }
 
 // update the ports status on the ui
-void Application::updatePortStatus(const QString status) {
+void Application::portError(const QString status) {
     ui->comStatusLabel->setText(status);
+}
+
+void Application::portConnected() {
+    isPortConnected = true;
+    ui->connectButton->setText("Disconnect");
+    ui->comStatusLabel->setText(ui->selectPort->currentText() + " has been connected and configured."); 
+}
+
+void Application::portDisconnected() {
+    isPortConnected = false;
+    ui->connectButton->setText("Connect");
+    ui->comStatusLabel->setText(ui->selectPort->currentText() + " has been disconnected."); 
 }

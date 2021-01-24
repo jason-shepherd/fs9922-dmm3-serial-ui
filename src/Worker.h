@@ -19,7 +19,9 @@ class Worker : public QObject {
     signals:
         void newData(const QString *data);
         void refreshedActivePorts(const QStringList ports);
-        void portStatus(const QString status);
+        void error(const QString error);
+        void connected();
+        void disconnected();
 
     private:
         QString m_data[4];
