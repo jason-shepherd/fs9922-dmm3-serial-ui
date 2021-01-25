@@ -2,7 +2,8 @@
 
 #include <QMainWindow>
 #include <QThread>
-#include <QTimer>
+#include <QFileDialog>
+#include <QDebug>
 
 #include "Worker.h"
 
@@ -25,6 +26,7 @@ class Application : public QMainWindow
         void portError(const QString error);
         void portConnected();
         void portDisconnected();
+        void initalizeDatalog();
 
     signals:
         void startPort(const QString port);

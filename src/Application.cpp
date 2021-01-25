@@ -30,6 +30,7 @@ Application::Application(QWidget *parent)
 
     connect(ui->refreshButton, &QPushButton::pressed, worker, &Worker::refreshActivePorts);
     connect(ui->connectButton, &QPushButton::pressed, this, &Application::togglePortConnection);
+    connect(ui->logButton, &QPushButton::pressed, this, &Application::initalizeDatalog);
 
     workerThread->start();
 
@@ -83,4 +84,9 @@ void Application::portDisconnected() {
     isPortConnected = false;
     ui->connectButton->setText("Connect");
     ui->comStatusLabel->setText(ui->selectPort->currentText() + " has been disconnected."); 
+}
+
+void Application::initalizeDatalog() {
+    QString filePath = QFileDialog::getSaveFileName(this, tr("Save Datalog"), "./log.csv", tr("CSV Files (*.csv)"));
+    qDebug() << filePath;
 }
