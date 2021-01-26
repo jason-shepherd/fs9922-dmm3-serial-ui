@@ -59,22 +59,19 @@ void Worker::getData() {
             } else {
                 dataString = m_interpret.getData();
             }
-        
+            
+            bool isFloat;
+            std::cout << QString::fromStdString(dataString).toFloat(&isFloat) << std::endl;
+            if(!isFloat)
+                dataString = "0.000";
+
             dataString += m_interpret.getPrefix() + m_interpret.getUnit();
             if(m_interpret.getData()[0] == '?')
                 dataString = "0L " + m_interpret.getUnit();
             if(!m_interpret.getPositive())
                dataString = "-" + dataString;
         
-            QString reading = QString::fromStdString(dataString);
-            bool* isFloat;
-            float toLog = reading.toFloat(isFloat);
-            std::cout << toLog << std::endl;
-            if(isFloat != nullptr)
-                m_data[0] = reading;
-            else
-                m_data[0] = "0.000";
-        
+            m_data[0] = QString::fromStdString(dataString);
             m_data[1] = QString::fromStdString(m_interpret.getVoltMode());
             m_data[2] = QString::fromStdString(m_interpret.getMode());
             emit newData(m_data);
@@ -82,4 +79,8 @@ void Worker::getData() {
     }
     // calls itself using a signal, so the event loop can process other signals
     QMetaObject::invokeMethod(this, "getData", Qt::QueuedConnection);
+}
+
+void Worker::startDatalog(const QString filePath) {
+    
 }

@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "rapidcsv.h"
+
 #include "SerialPort.h"
 #include "Interpreter.h"
 
@@ -15,6 +17,7 @@ class Worker : public QObject {
         void stopPort();
         void getData();
         void refreshActivePorts();
+        void startDatalog(const QString filePath);
 
     signals:
         void newData(const QString *data);
@@ -27,5 +30,7 @@ class Worker : public QObject {
         QString m_data[4];
         SerialPort m_serial;
         Interpreter m_interpret;
+        rapidcsv::Document m_doc;
         bool m_running = false;
+        bool m_datalogging = false;
 };

@@ -17,6 +17,7 @@ set(CMAKE_PREFIX_PATH "C:/Qt/5.9.9/mingw53_32")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
+include_directories(include)
 
 add_executable(MultimeterMod
     src/main.cpp
