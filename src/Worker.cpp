@@ -61,9 +61,15 @@ void Worker::getData() {
             }
             
             bool isFloat;
-            std::cout << QString::fromStdString(dataString).toFloat(&isFloat) << std::endl;
+            float reading = QString::fromStdString(dataString).toFloat(&isFloat);
             if(!isFloat)
                 dataString = "0.000";
+
+            if(m_datalogging) {
+                int rows = m_doc.GetRowCount();
+                m_doc.SetCell(0, rows, (float)m_logTimer.elapsed() / 1000);
+                m_doc.SetCell(1, rows, reading);
+            }
 
             dataString += m_interpret.getPrefix() + m_interpret.getUnit();
             if(m_interpret.getData()[0] == '?')
@@ -81,6 +87,12 @@ void Worker::getData() {
     QMetaObject::invokeMethod(this, "getData", Qt::QueuedConnection);
 }
 
-void Worker::startDatalog(const QString filePath) {
-    
+void Worker::startDatalog() {
+    m_datalogging = true;    
+    m_logTimer.start();
+}
+
+void Worker::stopDatalog(const QString filePath) {
+    m_datalogging = false;
+    m_doc.Save(filePath.toStdString());
 }

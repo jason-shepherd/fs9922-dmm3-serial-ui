@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QObject>
+#include <QElapsedTimer>
 #include <string>
 #include <vector>
 
@@ -17,7 +18,8 @@ class Worker : public QObject {
         void stopPort();
         void getData();
         void refreshActivePorts();
-        void startDatalog(const QString filePath);
+        void startDatalog();
+        void stopDatalog(const QString filePath);
 
     signals:
         void newData(const QString *data);
@@ -33,4 +35,5 @@ class Worker : public QObject {
         rapidcsv::Document m_doc;
         bool m_running = false;
         bool m_datalogging = false;
+        QElapsedTimer m_logTimer;
 };

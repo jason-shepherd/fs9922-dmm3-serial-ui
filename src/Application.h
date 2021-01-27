@@ -26,16 +26,19 @@ class Application : public QMainWindow
         void portError(const QString error);
         void portConnected();
         void portDisconnected();
-        void initalizeDatalog();
+        void toggleDatalog();
 
     signals:
         void startPort(const QString port);
         void stopPort();
         void refreshPortList();
+        void startDatalog();
+        void stopDatalog(const QString filePath);
     
     private:
         Ui::Application *ui;
         QThread *workerThread;
         Worker *worker;
         bool isPortConnected = false;
+        bool isDatalogging = false;
 };
