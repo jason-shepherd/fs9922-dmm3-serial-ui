@@ -1,7 +1,9 @@
 #include "Worker.h"
 
 Worker::~Worker() {
-    stopPort();
+    m_running = false;
+    m_datalogging = false;
+    m_serial.close();
     delete m_logTimer;
 }
 
@@ -95,6 +97,8 @@ void Worker::getData() {
 
 void Worker::startDatalog() {
     m_datalogging = true;    
+    std::vector<std::string> labels = {"Time", m_interpret.getUnit()};
+    m_doc.SetRow(0, labels);
     m_logTimer = new QElapsedTimer();
     m_logTimer->start();
 }
@@ -103,5 +107,6 @@ void Worker::stopDatalog(const QString filePath) {
     m_datalogging = false;
     delete m_logTimer;
     m_logTimer = nullptr;
-    m_doc.Save(filePath.toStdString());
+    if(filePath != "")
+        m_doc.Save(filePath.toStdString());
 }

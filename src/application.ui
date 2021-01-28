@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>832</width>
-    <height>263</height>
+    <width>970</width>
+    <height>267</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -58,20 +58,23 @@
      </font>
     </property>
     <property name="text">
-     <string>COM4 is currently being read.</string>
+     <string>Connect to serial port.</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QPushButton" name="logButton">
     <property name="geometry">
      <rect>
-      <x>680</x>
+      <x>740</x>
       <y>170</y>
-      <width>141</width>
-      <height>41</height>
+      <width>131</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>Start Data Log</string>
+     <string>Start Datalog</string>
     </property>
    </widget>
    <widget class="QWidget" name="horizontalLayoutWidget_2">
@@ -79,7 +82,7 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>764</width>
+      <width>911</width>
       <height>171</height>
      </rect>
     </property>
@@ -92,7 +95,7 @@
         </font>
        </property>
        <property name="text">
-        <string>-0.000mV</string>
+        <string>0.000V</string>
        </property>
       </widget>
      </item>
@@ -119,7 +122,7 @@
           </font>
          </property>
          <property name="text">
-          <string>DC</string>
+          <string>AC</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -134,7 +137,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Diode</string>
+          <string>AUTO</string>
          </property>
         </widget>
        </item>
@@ -161,7 +164,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>832</width>
+     <width>970</width>
      <height>26</height>
     </rect>
    </property>
