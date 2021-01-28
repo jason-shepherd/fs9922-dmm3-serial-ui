@@ -13,6 +13,9 @@
 class Worker : public QObject {
     Q_OBJECT
 
+    public:
+        ~Worker();
+
     public slots:
         void startPort(const QString port);
         void stopPort();
@@ -35,5 +38,5 @@ class Worker : public QObject {
         rapidcsv::Document m_doc;
         bool m_running = false;
         bool m_datalogging = false;
-        QElapsedTimer m_logTimer;
+        QElapsedTimer* m_logTimer;
 };

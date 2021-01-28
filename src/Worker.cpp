@@ -1,5 +1,10 @@
 #include "Worker.h"
 
+Worker::~Worker() {
+    stopPort();
+    delete m_logTimer;
+}
+
 // connect to port using SerialPort class
 void Worker::startPort(const QString port) {
     std::string temp = port.toStdString();
@@ -11,6 +16,7 @@ void Worker::startPort(const QString port) {
         m_serial.flush();
         m_running = true;
         emit connected();
+        getData();
     } else {
         emit error("Could not connect to " + port + ".");
     }
@@ -65,9 +71,9 @@ void Worker::getData() {
             if(!isFloat)
                 dataString = "0.000";
 
-            if(m_datalogging) {
+            if(m_datalogging && m_logTimer != nullptr) {
                 int rows = m_doc.GetRowCount();
-                m_doc.SetCell(0, rows, (float)m_logTimer.elapsed() / 1000);
+                m_doc.SetCell(0, rows, (float)m_logTimer->elapsed() / 1000);
                 m_doc.SetCell(1, rows, reading);
             }
 
@@ -82,17 +88,20 @@ void Worker::getData() {
             m_data[2] = QString::fromStdString(m_interpret.getMode());
             emit newData(m_data);
         }
+        // calls itself using a signal, so the event loop can process other signals
+        QMetaObject::invokeMethod(this, "getData", Qt::QueuedConnection);
     }
-    // calls itself using a signal, so the event loop can process other signals
-    QMetaObject::invokeMethod(this, "getData", Qt::QueuedConnection);
 }
 
 void Worker::startDatalog() {
     m_datalogging = true;    
-    m_logTimer.start();
+    m_logTimer = new QElapsedTimer();
+    m_logTimer->start();
 }
 
 void Worker::stopDatalog(const QString filePath) {
     m_datalogging = false;
+    delete m_logTimer;
+    m_logTimer = nullptr;
     m_doc.Save(filePath.toStdString());
 }

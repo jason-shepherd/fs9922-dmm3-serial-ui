@@ -13,8 +13,7 @@ Application::Application(QWidget *parent)
     worker->moveToThread(workerThread);
 
     // connect thread signals to start and delete worker
-    connect(workerThread, &QThread::started, worker, &Worker::getData);
-    connect(workerThread, &QThread::finished, worker, &Worker::deleteLater);
+    connect(workerThread, &QThread::finished, worker, &Worker::deleteLater, Qt::QueuedConnection);
 
     // connect signals and slots that start and stop the worker's work
     connect(this, &Application::startPort, worker, &Worker::startPort);
@@ -92,14 +91,16 @@ void Application::portDisconnected() {
 }
 
 void Application::toggleDatalog() {
-    if(!isDatalogging) {
-        emit startDatalog();
-        isDatalogging = true;
-        ui->logButton->setText("Stop Datalog");
-    } else {
-        QString filePath = QFileDialog::getSaveFileName(this, tr("Save Datalog"), "./log.csv", tr("CSV Files (*.csv)"));
-        emit stopDatalog(filePath);
-        isDatalogging = false;
-        ui->logButton->setText("Start Datalog");
+    if(isPortConnected) {
+        if(!isDatalogging) {
+            emit startDatalog();
+            isDatalogging = true;
+            ui->logButton->setText("Stop Datalog");
+        } else {
+            QString filePath = QFileDialog::getSaveFileName(this, tr("Save Datalog"), "./log.csv", tr("CSV Files (*.csv)"));
+            emit stopDatalog(filePath);
+            isDatalogging = false;
+            ui->logButton->setText("Start Datalog");
+        }
     }
 }
